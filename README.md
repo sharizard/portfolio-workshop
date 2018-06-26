@@ -115,7 +115,7 @@ Add the following snippet to package.json. You can place it below the private ta
 ```
 
 #### Update scripts block
-Update the script block with the following snippet
+Update the script block with the following snippet. Since we're using SASS to style our portfolio, we need some tools to convert sass files to css files. Using node-sass-chokidar is one way to achieve our goal.
 
 ```
 "scripts": {
@@ -191,6 +191,8 @@ const LandingPage = () => {
 export default LandingPage;
 
 ```
+
+This block of code will create a new component for called LandingPage. T
 NB! Remember to change IMAGE_FILE, YOUR_NAME, and YOUR_TITLE to something appropriate.
 
 11. Save your changes.
