@@ -6,6 +6,9 @@ Let's create a portfolio application together! The goal of this workshop is to c
 ## Useful links
 
 * [Getting Started with React](https://reactjs.org/docs/getting-started.html)
+* [Thinking in React](https://reactjs.org/docs/thinking-in-react.html)
+* [React Gh Pages](https://github.com/gitname/react-gh-pages)
+* [CSS Preprocessor](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-css-preprocessor-sass-less-etc)
 
 ## Prerequisites
 
@@ -115,7 +118,9 @@ Add the following snippet to package.json. You can place it below the private ta
 ```
 
 #### Update scripts block
-Update the script block with the following snippet. Since we're using SASS to style our portfolio, we need some tools to convert sass files to css files. Using node-sass-chokidar is one way to achieve our goal.
+Update the script block with the following snippet. Since we're using SASS to style our portfolio, we need some tools to convert our sass files to css files. Using node-sass-chokidar is one way to achieve our goal.
+
+For more information, please visit [Adding a CSS preprocessor](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-css-preprocessor-sass-less-etc).
 
 ```
 "scripts": {
@@ -152,6 +157,8 @@ npm run deploy
 
 Visit https://{USERNAME}.github.io/portfolio-workshop/ . If you are able to see your React app, then congratulations. If not, it's ok. It's not you. It's me. 
 
+For more information, visit [React-GH-Pages](https://github.com/gitname/react-gh-pages).
+
 #### Step 2.X: Create Landing Page component
 
 Before we get started, we need to update our styling. As mentioned earlier, we are not going to focus on how to style components. Hopefully, we will walk through styling through another workshop in the future. In the meantime, you should
@@ -175,6 +182,20 @@ Before we get started, we need to update our styling. As mentioned earlier, we a
 3. Add 'App.css' in your .gitignore file.
 
 ### Step 3: Create Landing Page component
+
+#### Step 3.1 (Optional): A bit theory
+
+The goal for this step is to create a new component called LandingPage, the first page that is visible to the user. For now, we will only add your name, title, and an image. But in later step, we will expand this component by adding a navbar, scrolling buttons, and social media icons.
+
+There are 3 ways to create React components:
+
+* Using a Variable Function
+* Using a Class
+* Using a Stateless Functional Component
+
+For more information, please visit [3 Ways to Create React Components](https://medium.com/@the.benhawy/3-ways-to-create-react-components-8b3620e4ea0)
+
+#### Step 3.2: How to create Landing Page Component
 
 First of all, run the application locally by running ```npm start```.
 
@@ -214,7 +235,6 @@ export default LandingPage;
 
 ```
 
-This block of code will create a new component for called LandingPage. T
 NB! Remember to change IMAGE_FILE, YOUR_NAME, and YOUR_TITLE to something appropriate.
 
 11. Save your changes.
@@ -255,7 +275,7 @@ export default App;
 
 ### Step 4: Create compoonent for NavBar
 
-To navigate between the different pages, we need a navigation bar.
+To navigate between the different pages, we will need a navigation bar.
 
 1. Go to components/ folder.
 2. Right click and create a new folder called "navbar".
@@ -331,8 +351,12 @@ export default NavBar;
 
 FYI, this block of code won't work yet. As you see in the imports block, we are trying to import some components from utils/scroll. These components does not exist yet.
 
+For more information about React Props, please visit [ReactJs - Props Overview](https://www.tutorialspoint.com/reactjs/reactjs_props_overview.htm)
+For more information about React state, please visit [ReactJs - State](https://www.tutorialspoint.com/reactjs/reactjs_state.htm)
 
-#### Step 4.1: Scrolling support
+### Step 5: Scrolling support
+
+Our navigation bar depends on scrolling support.
 
 1. Navigate to src/ folder. Create a new folder called utils.
 2. Add a new file in src/utils. Name it "scroll.js"
@@ -389,7 +413,9 @@ export default {
 
 We should now be able to use the NavBar component.
 
-#### Step 4.2: Update LandingPage component
+#### Step 5.1: Update LandingPage component with NavBar
+
+It is time to add our NavBar component to our LandingPage.
 
 1. Go to src/components/pages and open LandingPage.jsx
 2. Import NavBar component and add it inside ```<div className="landing-page">```, before the ```<main>``` tag. 
@@ -423,9 +449,11 @@ export default LandingPage;
 ```
 
 3. Save your changes.
-4. Go to the browser and refresh site. Navigation bar should be visible.
+4. Go to the browser and refresh site. Navigation bar should be visible. Feel free to click correctly, but it wont work yet as we cant scroll between pages.
 
 ### Step 6: Create a component for social icons
+
+What is a portfolio page without icons for the different social medias?
 
 1. Go to src/components. Add a new folder named "socialIcons". 
 2. Inside the folder, create a new file with following name: "SocialIcons.jsx".
@@ -447,7 +475,7 @@ export default SocialIcons;
 4. Remember to change "hrefs" with the appropriate URLs for your GitHub and LinkedIn page. 
 4a (optional): You can also add social icons for other social medias like Instagram or Facebook. See [FontAwesome Icons](https://fontawesome.com/icons?d=gallery) to find icons for your social medias. Then update the className inside the ```<i>``` tag.
 
-#### Step 6.1: Update LandingPage
+#### Step 6.1: Update LandingPage with Icons
 
 1. Go to src/components/pages and open LandingPage.jsx
 2. Import SocialIcons component and add it inside ```<div className="intro-wrapper">``` tag, below tagline div. 
@@ -486,6 +514,8 @@ export default LandingPage;
 4. Go to the browser and refresh site. Social icons should now be visible.
 
 ### Step 7: Create buttons for scrolling
+
+Navigation bar is good, but not that good. We want some fancy buttons on the bottom of the page that can scroll to next, previous, or to top page.
 
 1. Create a new folder inside "src/components" called "scroll". 
 2. Create a new file "ScrollToPage.jsx".
@@ -652,7 +682,7 @@ class AboutPage extends Component {
 export default AboutPage;
 ```
 
-3. Edit the description inside about-content div to something that fits your.
+3. Edit the description inside about-content div to something that fits you.
 4. Update index.js inside src/components/pages to export AboutPage.
 5. Open App.js inside src/. and add AboutPage component.
 
@@ -682,12 +712,14 @@ export default App;
 
 ```
 
+6. Refresh app in the browser. Try to scroll to AboutPage. Use navbar and the different buttons.
+
 ### Step 9: Create Portfolio Page
 
 ### Step 10: Create Hobbies Page
 
 Congratulations on coming so far!!!!!! :)
-You should probably have an idea now on how to create new components and add it to your page. I will then leave this step open so you can experiment React freely.
+You should probably have an idea now on how to create new components and add it to your page. Try to add this page on your own.
 
 ## Authors
 
