@@ -108,7 +108,7 @@ After installing npm packages, update your package.json file.
 4. Select the folder named “portfolio-workshop” located in “C:\Users\<your.accenture.id\Desktop\repos\portfolio-workshop”
 5. Open the file "package.json". Tip for opening file, inside VSCode press:```CTRL+P``` and write ```package.json``` 
 
-#### Add homepage
+#### Add homepage label
 Add the following snippet to package.json. You can place it below the private tag.
 ```
 "homepage": "http://{USERNAME}.github.io/portfolio-workshop",
@@ -151,6 +151,28 @@ npm run deploy
 ```
 
 Visit https://{USERNAME}.github.io/portfolio-workshop/ . If you are able to see your React app, then congratulations. If not, it's ok. It's not you. It's me. 
+
+#### Step 2.X: Create Landing Page component
+
+Before we get started, we need to update our styling. As mentioned earlier, we are not going to focus on how to style components. Hopefully, we will walk through styling through another workshop in the future. In the meantime, you should
+
+1. Rename "App.css" to "App.scss" inside src/ folder.
+2. Replace content in App.scss with:
+```
+@import 'styles/reset';
+@import 'styles/breakpoints';
+@import 'styles/global';
+@import 'styles/socialIcons';
+@import 'styles/scrollToNext';
+@import 'styles/landingPage';
+@import 'styles/navBar';
+@import 'styles/aboutPage';
+@import 'styles/scrollTop';
+@import 'styles/aboutPage';
+@import 'styles/color';
+```
+
+3. Add 'App.css' in your .gitignore file.
 
 ### Step 3: Create Landing Page component
 
