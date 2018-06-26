@@ -1,6 +1,7 @@
 # ATA Frontend - Introduction to React
 
-Let's create a portfolio application together!
+Let's create a portfolio application together! The goal of this workshop is to create an application that is similar to this:
+[Sharizard Portfolio](https://sharizard.github.io/portfolio/)
 
 ## Useful links
 
@@ -159,12 +160,12 @@ First of all, run the application locally by running ```npm start```.
 2. Click “File”
 3. Click “Open folder”
 4. Select the folder named “portfolio-workshop” located in “C:\Users\<your.accenture.id\Desktop\repos\portfolio-workshop”. The project should be visible in VSCode. 
-6. Navigate to public folder. Right click and create a new folder called "assets".
-7. Add your desired image to the assets folder. You can for instance use the cartoon image provided by Ismar, or profile picture from Accenture.
-8. Navigate to src folder. Right click on the folder and create a new folder called "components".
-9. In src/components, create a new folder called pages.
-10. In pages, create a new file called LandingPage.jsx
-11. Add the following snippet of code to LandingPage.jsx:
+5. Navigate to public folder. Right click and create a new folder called "assets".
+6. Add your desired image to the assets folder. You can for instance use the cartoon image provided by Ismar, or profile picture from Accenture.
+7. Navigate to src folder. Right click on the folder and create a new folder called "components".
+8. In src/components, create a new folder called pages.
+9. In pages, create a new file called LandingPage.jsx.
+10. Add the following snippet of code to LandingPage.jsx:
 ```
 import React from 'react';
 
@@ -192,17 +193,17 @@ export default LandingPage;
 ```
 NB! Remember to change IMAGE_FILE, YOUR_NAME, and YOUR_TITLE to something appropriate.
 
-12. Save your changes.
-13. Create a new file under src/components/pages. Name it "index.js"
-14. Add following snippet of code to index.js
+11. Save your changes.
+12. Create a new file under src/components/pages. Name it "index.js"
+13. Add following snippet of code to index.js
 ```
 export {default as LandingPage} from "./LandingPage";
 ```
-15. Save file.
-16. Open "App.js" under src/.
-17. Remove everything inside the return statement in render-method.
-18. Import LandingPage by adding ```import { LandingPage } from './components/pages';``` to your imports.
-19. Add a new div inside return block in render method, then add the LandingPage component. App.js should look like this:
+14. Save file.
+15. Open "App.js" under src/.
+16. Remove everything inside the return statement in render-method.
+17. Import LandingPage by adding ```import { LandingPage } from './components/pages';``` to your imports.
+18. Add a new div inside return block in render method, then add the LandingPage component. App.js should look like this:
 ```
 import React, { Component } from 'react';
 import './App.css';
@@ -224,268 +225,445 @@ export default App;
 
 ```
 
-20. Save changes.
-21. Go to the browser. Refresh page. You should now see the landing page including a picture, your name, and your title.
-22. Congratulations. We can now move to step 4.
+19. Save changes.
+20. Go to the browser. Refresh page. You should now see the landing page including a picture, your name, and your title.
+21. Congratulations. We can now move to step 4.
 
-### Step 2: Adding items
+### Step 4: Create compoonent for NavBar
 
-Stash local changes and checkout branch Step-one_Creating-the-home-page, run the following command in terminal:
+To navigate between the different pages, we need a navigation bar.
+
+1. Go to components/ folder.
+2. Right click and create a new folder called "navbar".
+3. Right click on navbar/ folder, and create a new file: "NavBar.jsx"
+4. Open NavBar.jsx and the following snippet of code:
+```
+import React, { Component } from 'react';
+import { toElement as scrollToElement } from '../../utils/scroll';
+
+class NavBar extends Component {
+    constructor(props) {
+        super(props);
+        this.handleScroll = this.handleScroll.bind(this);
+        this.state = {
+            isSticky: false
+        }
+    }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll() {
+        if (window.pageYOffset > this.nav.offsetTop) {
+            this.setState({
+                isSticky: true
+            });
+        } else {
+            this.setState({
+                isSticky: false
+            });
+        }
+    }
+
+    scrollToPage(pageSelector) {
+        const nextPage = document.querySelector(pageSelector);
+        scrollToElement(nextPage);
+    }
+
+    render() {
+        const stickyClass = this.state.isSticky ? 'sticky' : '';
+        return (
+            <nav
+            className={stickyClass}
+            ref={(elem) => {
+              this.nav = elem;
+            }}
+            >
+                <div className="menu">
+                    <div
+                        className="menu__item active"
+                        onClick={(e) => this.scrollToPage('.about-page')}
+                    >
+                        About
+                    </div>
+                    <div
+                        className="menu__item"
+                        onClick={(e) => this.scrollToPage('.portfolio-page')}
+                    >
+                        Portfolio
+                    </div>
+                </div>
+            </nav>
+        )
+    }
+}
+
+export default NavBar;
 
 ```
-git stash && git checkout -f Step-one_Creating-the-home-page
+
+5. Save file. 
+
+FYI, this block of code won't work yet. As you see in the imports block, we are trying to import some components from utils/scroll. These components does not exist yet.
+
+
+#### Step 4.1: Scrolling support
+
+1. Navigate to src/ folder. Create a new folder called utils.
+2. Add a new file in src/utils. Name it "scroll.js"
+3. Add the following block of code:
+```
+const isSmoothScrollSupported = ((document || {}).documentElement || {}).style
+  ? 'scrollBehavior' in document.documentElement.style
+  : false;
+
+export const toTop = () => {
+  if (isSmoothScrollSupported) {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  } else {
+    window.scrollTo(0, 0);
+  }
+};
+
+export const to = (ycoordinate) => {
+  if (isSmoothScrollSupported) {
+    window.scroll({
+      top: ycoordinate,
+      left: 0,
+      behavior: 'smooth'
+    });
+  } else {
+    window.scrollTo(0, ycoordinate);
+  }
+};
+
+export const toElement = (element) => {
+  if (element) {
+    if (isSmoothScrollSupported) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else {
+      element.scrollIntoView();
+    }
+  }
+};
+
+export default {
+  toTop,
+  to,
+  toElement
+};
+
 ```
 
-1. Create the page for adding items to the ToDo list by typing the following commands in your Terminal: 
-```cd ionic-workshop\ionic-todo\src\pages```
-```ionic g page AddItem```
-2. Open “src/app/app.module.ts” and add the following import: 
-```ts
-import { AddItemPage } from '../pages/add-item/add-item';
+We should now be able to use the NavBar component.
+
+#### Step 4.2: Update LandingPage component
+
+1. Go to src/components/pages and open LandingPage.jsx
+2. Import NavBar component and add it inside ```<div className="landing-page">```, before the ```<main>``` tag. 
+
+Expected result:
 ```
-3. In the same file, add “AddItemPage” in the declarations and entryComponents array.
-4. Open “src/pages/add-item/add-item.html” and replace its content with the following:
-```html
-<ion-header>
-  <ion-toolbar color="secondary">
-    <ion-title>
-      Add Item
-    </ion-title>
-      <ion-buttons end>
-        <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
-      </ion-buttons>
-    </ion-toolbar>
-</ion-header>
- 
-<ion-content>
-  <ion-list>
- 
-    <ion-item>
-      <ion-label floating>Title</ion-label>
-      <ion-input type="text" [(ngModel)]="title"></ion-input>
-    </ion-item>
- 
-    <ion-item>
-      <ion-label floating>Description</ion-label>
-      <ion-input type="text" [(ngModel)]="description"></ion-input>
-    </ion-item>
- 
-  </ion-list>
- 
-  <button full ion-button color="secondary" (click)="saveItem()">Save</button> 
- 
-</ion-content>
+import React from 'react';
+import NavBar from '../../../components/navbar/NavBar';
+
+const LandingPage = () => {
+    return (
+        <div className="landing-page">
+            <NavBar />
+            <main>
+                <div className="intro-wrapper">
+                    <img 
+                        src="assets/IMAGE_FILE.png"
+                        alt="avatar"
+                        className="avatar-img" />
+                    <div className="intro-name">YOUR_NAME</div>
+                    <div className="tagline">
+                        YOUR_TITLE
+                    </div>
+                </div>
+            </main>
+        </div>
+    )
+}
+
+export default LandingPage;
 ```
-5. Open “add-item.ts” and add the following fields, under export class AddItemPage: 
-```ts
-title;
-description;
+
+3. Save your changes.
+4. Go to the browser and refresh site. Navigation bar should be visible.
+
+### Step 6: Create a component for social icons
+
+1. Go to src/components. Add a new folder named "socialIcons". 
+2. Inside the folder, create a new file with following name: "SocialIcons.jsx".
+3. Paste following snippet of code:
 ```
-6. In the same file, rename the class name (name appearing after “export class” to ```AddItemPage```
-7. Replace the import statement "import { IonicPage, NavController, NavParams } from 'ionic-angular';" with:
-```ts
-import { NavController, ViewController } from 'ionic-angular';
+import React from 'react';
+
+const SocialIcons = () => {
+  return (
+    <div className="social-icons animate-icons">
+        <a target="_blank" rel="noopener noreferrer" href="https://github.com/"><i className="fa fa-github"></i></a>
+        <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/"><i className="fa fa-linkedin"></i></a>
+      </div>
+  );
+};
+
+export default SocialIcons;
 ```
-8. In the same file, replace “public navParams: NavParams” parameter in the constructor with:
-```ts
-public view: ViewController
+4. Remember to change "hrefs" with the appropriate URLs for your GitHub and LinkedIn page. 
+4a (optional): You can also add social icons for other social medias like Instagram or Facebook. See [FontAwesome Icons](https://fontawesome.com/icons?d=gallery) to find icons for your social medias. Then update the className inside the ```<i>``` tag.
+
+#### Step 6.1: Update LandingPage
+
+1. Go to src/components/pages and open LandingPage.jsx
+2. Import SocialIcons component and add it inside ```<div className="intro-wrapper">``` tag, below tagline div. 
+
+Expected result:
 ```
-9. Remove “@IonicPage()” annotation.
-10. Under the constructor, add the following functions:
-```ts
-saveItem(){
-    let newItem = {
-    title: this.title,
-    description: this.description
+import React from 'react';
+import NavBar from '../../../components/navbar/NavBar';
+import SocialIcons from '../../socialIcons/SocialIcons';
+
+const LandingPage = () => {
+    return (
+        <div className="landing-page">
+            <NavBar />
+            <main>
+                <div className="intro-wrapper">
+                    <img 
+                        src="assets/IMAGE_FILE.png"
+                        alt="avatar"
+                        className="avatar-img" />
+                    <div className="intro-name">YOUR_NAME</div>
+                    <div className="tagline">
+                        YOUR_TITLE
+                    </div>
+                     <SocialIcons />
+                </div>
+            </main>
+        </div>
+    )
+}
+
+export default LandingPage;
+```
+
+3. Save your changes.
+4. Go to the browser and refresh site. Social icons should now be visible.
+
+### Step 7: Create buttons for scrolling
+
+1. Create a new folder inside "src/components" called "scroll". 
+2. Create a new file "ScrollToPage.jsx".
+3. Add the following block of code:
+```
+import React, { Component } from 'react';
+import { toElement as scrollToElement } from '../../utils/scroll';
+
+class ScrollToPage extends Component {
+
+  scrollToPage() {
+    const { pageSelector } = this.props;
+    const nextPage = document.querySelector(pageSelector);
+    scrollToElement(nextPage);
+  }
+
+  render() {
+    const faIcon = this.props.isFinal ? 'fa-chevron-up' : 'fa-chevron-down'; 
+    const color = this.props.isRed ? 'white' : 'red';
+    return (
+      <div className="scroll-to-next" onClick={(e) => this.scrollToPage()}>
+        <div className={`arrow bounce ${color}`}>
+          <div className="scroll-text">Click Me</div>
+          <i className={`fa ${faIcon} fa-2x`} href="#" />
+        </div>
+      </div>
+    );
+  }
+}
+
+export default ScrollToPage;
+
+
+```
+
+4. Save changes.
+5. Create a new file "ScrollTop.jsx".
+6. Add the following block of code:
+```
+import React, { Component } from 'react';
+import { toTop as scrollToPageTop } from '../../utils/scroll';
+
+class ScrollTop extends Component {
+  constructor(props) {
+    super(props);
+    this.handleScroll = this.handleScroll.bind(this);
+    this.state = {
+      shouldShowScrollTopArrow: false
     };
+  }
 
-    this.view.dismiss(newItem);
-}
- 
-close(){
-    this.view.dismiss();
-}
-```
-11. Remove “@IonicPage()” annotation.
-12. Open the file “src/pages/home/home.ts”. ```CTRL+P``` then ```home.ts```
-13. Replace its content with the following (we are now replacing the dummy data with logic for adding data dynamically):
-```ts
-import { Component } from '@angular/core';
-import { ModalController, NavController } from 'ionic-angular';
-import { AddItemPage } from '../add-item/add-item'
- 
-@Component({
-    selector: 'page-home',
-    templateUrl: 'home.html'
-})
-export class HomePage {
- 
-  	public items = [];
- 
-  	constructor(public navCtrl: NavController, public modalCtrl: ModalController) {
-  	}
- 
-  	ionViewDidLoad(){
-  	}
- 
-  	addItem(){
-        let addModal = this.modalCtrl.create(AddItemPage);
-   	 	addModal.onDidDismiss((item) => {
-            if(item){
-                this.saveItem(item);
-            }
-        });
-        addModal.present();
-  	}
- 
-  	saveItem(item){
-    	this.items.push(item);
-  	}
- 
-  	viewItem(item){
-  	}
-}
-```
-14. Tip: change app color by modifying hexadecimal color variables in the file “variables.scss”. Default variable is “secondary”.
-
-### Step 3: Viewing items
-
-We want to be able to click on an item in the list and see its description. This is what we are going to implement next.
-
-Stash local changes and checkout branch Step-two_Adding-items, run the following command in terminal:
-
-```
-git stash && git checkout -f Step-two_Adding-items
-```
-
-1. Create an item-detail page by typing the following command: ```ionic g page ItemDetail```
-2. In the file “app.module.ts”, add the following import statement:
-```ts
-import { ItemDetailPage } from '../pages/item-detail/item-detail';
-```
-3. In the same file, add “ItemDetailPage” to the declarations and entryComponents arrays.
-4. Open the file “item-detail.html” and replace its content with the following:
-```html
-<ion-header>
-    <ion-navbar color="secondary">
-        <ion-title>
-            {{title}}
-        </ion-title>
-    </ion-navbar>
-</ion-header>
- 
-<ion-content>
-    <ion-card>
-        <ion-card-content>
-            {{description}}
-        </ion-card-content>
-    </ion-card>
-</ion-content>
-```
-5. Open “item-detail.ts” and add the following fields above the constructor:
-```ts
- title;
- description”;
-```
-6. In the same file, replace the function body of “ionViewDidLoad()” with the following:
-```ts
-this.title = this.navParams.get('item').title;
-this.description = this.navParams.get('item').description;
-```
-7. Remove annotation “@IonicPage()” in the file
-8. Rename class name to “ItemDetailPage”
-9. Open the file “home.ts” and add the following to the function body of “viewItem()”:
-```ts
-this.navCtrl.push(ItemDetailPage, {
-    item: item
-});
-```
-10. In the same file, add the following import statement: 
-```ts
-import { ItemDetailPage } from '../item-detail/item-detail';
-```
-### Step 4: Saving data permanently to storage
-
-Now, the items in the todo-list will be cleared every time the application is closed. We are now going to improve this behavior by instead storing the items permanently. A data service will help us achieve this..
-
-Stash local changes and checkout branch Step-three_Viewing-items, run the following command in terminal:
-
-```
-git stash && git checkout -f Step-three_Viewing-items
-```
-
-1. Install storage plugin by typing the following command in the terminal:
-```npm install --save @ionic/storage```
-2. Create a data service by typing the command:
-```ionic g provider Data```
-3. Open the file “data.ts” and replace its content with the following:
-```ts
-import { Storage } from '@ionic/storage';
-import { Injectable } from '@angular/core';
-
-@Injectable()
-export class Data {
-
-    constructor(public storage: Storage){
+  handleScroll() {
+    const boundingRect = ((document || {}).documentElement || {})
+      .getBoundingClientRect;
+    if (boundingRect) {
+      if (document.documentElement.getBoundingClientRect().top * -1 > 100)
+        this.setState({ shouldShowScrollTopArrow: true });
+      else this.setState({ shouldShowScrollTopArrow: false });
     }
+  }
 
-    getData() {
-        return this.storage.get('todos');  
-    }
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
 
-    save(data){
-        let newData = JSON.stringify(data);
-        this.storage.set('todos', newData);
+  render() {
+    const colorPrimary = 'blue';
+    const hideArrowClass = this.state.shouldShowScrollTopArrow ? '' : 'hide';
+    return (
+      <div className="scroll-top" onClick={(e) => scrollToPageTop()}>
+        <div
+          className={`arrow ${hideArrowClass}`}
+          style={{ color: colorPrimary }}
+        >
+          <button className="fa fa-angle-double-up fa-2x" href="#" />
+          <div className="to-top">To Top</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default ScrollTop;
+
+```
+
+7. Save changes.
+8. Create index.js inside src/components/scroll
+9. Add following block of code:
+```
+export {default as ScrollToPage} from "./ScrollToPage";
+export {default as ScrollTop} from "./ScrollTop";
+
+```
+10. Save changes.
+11. Open LandingPage component.
+12. Import ScrollToPage component by adding ```import { ScrollToPage } from '../../scroll';``` to your import block.
+13. Add following block of code inside landing-page div, right below the closing main tag.
+```
+<ScrollToPage isFinal={false} pageSelector=".about-page" />
+```
+14. Save changes. Refresh browser. Try out the button.
+15. Finally, add the ScrollTop component to App.js file inside src/ folder.
+```
+import React, { Component } from 'react';
+import './App.css';
+import {
+  LandingPage
+} from './components/pages';
+
+import { ScrollTop } from './components/scroll';
+
+class App extends Component {
+  render() {
+    return (
+      <div className="landing-page">
+        <LandingPage />
+        <ScrollTop />
+      </div>
+    );
+  }
+}
+
+export default App;
+
+```
+
+FYI, you can't test the ScrollTop component until step 8 is finished.
+
+### Step 8: Create About Page
+
+1. Create a new component called AboutPage.jsx inside src/components/pages.
+2. Add the following block of code:
+
+```
+import React, { Component } from 'react';
+import { ScrollToPage } from '../../scroll';
+
+class AboutPage extends Component {
+
+    render() {
+        return (
+            <div className="about-page">
+                <div className="content-grid">
+                    <h1>About</h1>
+                    <div className="about-wrapper">
+                    <div className="about-content">
+                        <p>
+                        I like and hate <span className="highlight">JavaScript</span> and
+                        everything web.
+                        </p>
+                        <p className="text-emoji">
+                        \ (•◡•) /
+                        </p>
+                    </div>
+                    </div>
+                </div>
+                <ScrollToPage isFinal={false} isRed={true} pageSelector=".portfolio-page" />
+            </div>
+        )
     }
 }
+
+export default AboutPage;
 ```
-4. Open the file “app.module.ts” and add the following import statements:
-```ts
-import { IonicStorageModule } from '@ionic/storage';
-import { Data } from '../providers/data';
+
+3. Edit the description inside about-content div to something that fits your.
+4. Update index.js inside src/components/pages to export AboutPage.
+5. Open App.js inside src/. and add AboutPage component.
+
 ```
-5. In the same file, add the following to the imports array:
-```ts
-IonicStorageModule.forRoot()
+import React, { Component } from 'react';
+import './App.css';
+import {
+  AboutPage,
+  LandingPage
+} from './components/pages';
+
+import { ScrollTop } from './components/scroll';
+
+class App extends Component {
+  render() {
+    return (
+      <div className="landing-page">
+        <LandingPage />
+        <AboutPage />
+        <ScrollTop />
+      </div>
+    );
+  }
+}
+
+export default App;
+
 ```
-6. Add the following to the providers array:
-```ts
-Data
-```
-7. Open the file “home.ts” and add the following import statement: 
-```ts
-import { Data } from '../../providers/data';
-```
-8. In the same file, add the following to the constructor: 
-```ts
-public dataService: Data
-```
-9. Add the following to the body of the constructor:
-```ts
-this.dataService.getData().then((todos) => {
-    if(todos){
-            this.items = JSON.parse(todos); 
-    }
-});
-```
-10. Add the following to the body of the “saveItem()” function:
-```ts
-this.dataService.save(this.items);
-```
-11. Refresh browser and try to add some items.
 
-### Step 5: Deploy to your own phone
+### Step 9: Create Portfolio Page
 
+### Step 10: Create Hobbies Page
 
-
-
-
-
-
-
-
-
-
+Congratulations on coming so far!!!!!! :)
+You should probably have an idea now on how to create new components and add it to your page. I will then leave this step open so you can experiment React freely.
 
 ## Authors
 
