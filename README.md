@@ -839,6 +839,9 @@ Do you remember how we deploy a page do Github Pages?
 Congratulations on coming so far!!!!!! :)
 You should probably have an idea now on how to create new components and add it to your page. Try to add this page on your own.
 
+
+export GIT_SSH=/c/Git/bin/ssh.exe
+
 ## Authors
 
 [Shahariar Kabir Bhuiyan](https://github.com/sharizard)
