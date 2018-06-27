@@ -153,7 +153,7 @@ Visit http://localhost:3000. In case it does not look OK, ask an adult for help.
 Then we need to link the application to our own GitHub repo.
 
 1. Go to Github and create a new repo. 
-2. Run following command on terminal ```git remote add origin https://github.com/sharizard/{REPO_NAME}.git```
+2. Run following command on terminal ```git remote set-url origin https://github.com/USERNAME/REPOSITORY.git```
 3. Then this command ```git push -u origin master```
 
 
