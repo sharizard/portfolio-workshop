@@ -1,4 +1,5 @@
 @import 'breakpoints';
+@import 'color';
 
 .portfolio-page {
   padding-top: 2rem;
@@ -15,6 +16,7 @@
   h1 {
     padding: 1rem 0;
     font-size: 3rem;
+    color: $colorPrimary;
   }
 
   .content-grid {
