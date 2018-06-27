@@ -177,6 +177,8 @@ Before we get started, we need to update our styling. As mentioned earlier, we a
 @import 'styles/scrollTop';
 @import 'styles/aboutPage';
 @import 'styles/color';
+@import 'styles/portfolioPage';
+@import 'styles/portfolioItem';
 ```
 
 3. Add 'App.css' in your .gitignore file.
@@ -716,7 +718,115 @@ export default App;
 
 ### Step 9: Create Portfolio Page
 
-### Step 10: Create Hobbies Page
+1. Create a new component called PortfolioPage.jsx inside src/components/pages.
+2. Add the following block of code:
+
+```
+import React, { Component } from 'react';
+import { ScrollToPage } from '../../scroll';
+import PortfolioItem from '../../portfolio/PortfolioItem';
+
+class PortfolioPage extends Component {
+    render() {
+        return (
+            <div className="portfolio-page">
+                <div className="content-grid">
+                    <h1>Portfolio</h1>
+                    <div className="portfolio-wrapper">
+                        <PortfolioItem />
+                    </div>
+                </div>
+                <ScrollToPage isFinal={true} pageSelector=".about-page" />
+            </div>
+        );
+    }
+}
+
+export default PortfolioPage;
+```
+
+3. Edit the description inside about-content div to something that fits you.
+4. Update index.js inside src/components/pages to export PortfolioPage.
+5. Open App.js inside src/. and add PortfolioPage component.
+
+```
+import React, { Component } from 'react';
+import './App.css';
+import {
+  AboutPage,
+  LandingPage,
+  PortfolioPage
+} from './components/pages';
+
+import { ScrollTop } from './components/scroll';
+
+class App extends Component {
+  render() {
+    return (
+      <div className="landing-page">
+        <LandingPage />
+        <AboutPage />
+        <PortfolioPage />
+        <ScrollTop />
+      </div>
+    );
+  }
+}
+
+export default App;
+
+
+```
+
+6. Refresh app in the browser. The code will not compile. Do you see why?
+7. We are trying to import something called PortfolioItem in PortfolioPage component. This component does not exist yet. React is all about components, and we should always try to create generic reusable components if the use case allows us. It's normally for a portfolio to list multiple projects that one has worked on, and we should therefore have a generic component for our portfolio items so we can easily list multiple projects.
+8. Create a new folder called "portfolio" inside components/ folder. 
+9. Create a new file called "PortfolioItem.jsx" inside components/portfolio. 
+10. Add the following block of code:
+```
+import React from 'react';
+
+const PortfolioItem = () => {
+    return (
+        <div className="portfolio-item">
+            <div className="portfolio-item__title">PROJECT NAME</div>
+
+            <div className="portfolio-item__desc">
+            PROJECT DESCRIPTION
+            </div>
+            <div className="portfolio-item__icon">
+                <i className="fa fa-js" />
+                <i className="fa fa-react" />
+                <i className="fa fa-html5" />
+            </div>
+            <div className="portfolio-item__links">
+            <a src="#">More</a>
+            </div>
+        </div>
+        );
+    
+};
+
+export default PortfolioItem;
+
+```
+
+11. Save changes. Refresh page now. You should now see that our portfolio page contains one item: "YOUR NAME".
+
+#### Step 9.1: Challenge - Take project name and description as props in PortfolioItem
+Our PortfolioItem component is not very generic. Project name and project description is currently static in the component. 
+
+1. Change this component so it takes project name and description as props. 
+2. Remember to send the props from the parent component.
+3. Refresh page locally. The results should be same as before.
+4. Update PortfolioPage with multiple PortfolioItems.
+5. Refresh page locally. You should now have multiple items in your Portfolio Page.
+
+### Step 10: Deploy page to GitHub Pages
+
+Do you remember how we deploy a page do Github Pages?
+
+### Step 11: Create Hobbies Page
 
 Congratulations on coming so far!!!!!! :)
 You should probably have an idea now on how to create new components and add it to your page. Try to add this page on your own.
