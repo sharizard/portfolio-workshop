@@ -55,7 +55,7 @@ npm install create-react-app -g
 
 ### Install Visual Studio Code
 
-Install [Visual Studio Code](https://nodejs.org/en/) or your favorite IDE
+Install [Visual Studio Code](https://code.visualstudio.com/) or your favorite IDE
 
 ## You first React App
 
