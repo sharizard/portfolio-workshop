@@ -55,7 +55,7 @@ npm install create-react-app -g
 
 ### Install Visual Studio Code
 
-Install [Visual Studio Code](https://nodejs.org/en/) or your favorite IDE
+Install [Visual Studio Code](https://code.visualstudio.com/) or your favorite IDE
 
 ## You first React App
 
@@ -94,13 +94,14 @@ and run following command in the terminal:
 ```
 git fetch
 git checkout development
+npm install
 ```
 
 Then run the following commands to install necessary npm packages for this tutorial:
 ```
 npm install node-sass-chokidar --save
 npm install npm-run-all --save
-npm install gh-page --save-dev
+npm install gh-pages --save-dev
 ```
 
 After installing npm packages, update your package.json file. 
@@ -148,6 +149,13 @@ npm start
 ```
 
 Visit http://localhost:3000. In case it does not look OK, ask an adult for help.
+
+Then we need to link the application to our own GitHub repo.
+
+1. Go to Github and create a new repo. 
+2. Run following command on terminal ```git remote add origin https://github.com/sharizard/{REPO_NAME}.git```
+3. Then this command ```git push -u origin master```
+
 
 Deploying to GitHub Pages:
 ```
