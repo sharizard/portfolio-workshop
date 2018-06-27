@@ -100,7 +100,7 @@ Then run the following commands to install necessary npm packages for this tutor
 ```
 npm install node-sass-chokidar --save
 npm install npm-run-all --save
-npm install gh-page --save-dev
+npm install gh-pages --save-dev
 ```
 
 After installing npm packages, update your package.json file. 
