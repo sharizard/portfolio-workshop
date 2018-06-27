@@ -94,6 +94,7 @@ and run following command in the terminal:
 ```
 git fetch
 git checkout development
+npm install
 ```
 
 Then run the following commands to install necessary npm packages for this tutorial:
